@@ -1,0 +1,5 @@
+C:/Users/ozert/Documents/Unity Projects/Project_3562/EmptyUnityMultiplayerTemplate-2023/.utmp/RelWithDebInfo/sf95z5hp/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/ozert/Documents/Unity Projects/Project_3562/EmptyUnityMultiplayerTemplate-2023/.utmp/RelWithDebInfo/sf95z5hp/arm64-v8a/CMakeFiles/rebuild_cache.dir
+C:/Users/ozert/Documents/Unity Projects/Project_3562/EmptyUnityMultiplayerTemplate-2023/.utmp/RelWithDebInfo/sf95z5hp/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+C:/Users/ozert/Documents/Unity Projects/Project_3562/EmptyUnityMultiplayerTemplate-2023/.utmp/RelWithDebInfo/sf95z5hp/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+C:/Users/ozert/Documents/Unity Projects/Project_3562/EmptyUnityMultiplayerTemplate-2023/.utmp/RelWithDebInfo/sf95z5hp/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir
