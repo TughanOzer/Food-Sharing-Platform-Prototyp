@@ -45,8 +45,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5db83b2e1a57d4c4e94598d5301d0997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  theListPrefab: {fileID: 7220905758338705317, guid: 1aed4957705a0504ca45b2ac9cadf0fd, type: 3}
+  theListPrefab: {fileID: 1413197655597377147, guid: 1aed4957705a0504ca45b2ac9cadf0fd, type: 3}
   panel: {fileID: 0}
+  textArray: []
+  playerData: {fileID: 0}
+  MHDAbgelaufen: 0
+  imagesNeuesAngebot: []
+  selectedImage: 0
+  playerObject: {fileID: 0}
+  networkManager: {fileID: 0}
+  Beitrittscode: 
 --- !u!114 &8037190894899289411
 MonoBehaviour:
   m_ObjectHideFlags: 0
