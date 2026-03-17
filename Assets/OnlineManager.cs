@@ -144,8 +144,10 @@ public class OnlineManager : NetworkBehaviour {
 
 
     // Button Functions
-    private void FixedUpdate() {
-        playerData = playerObject.GetComponent<PlayerData>();
+    private void Start() {
+        if (playerObject != null) {
+            playerData = playerObject.GetComponent<PlayerData>();
+        }
     }
 
     public void SaveHeadline(TextMeshProUGUI text) {
