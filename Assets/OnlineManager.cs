@@ -7,8 +7,6 @@ using Unity.Netcode;
 using UnityEngine;
 
 public class OnlineManager : NetworkBehaviour {
-
-
     public GameObject theListPrefab;
     public Transform panel;
     GameObject ServerPrefab;
@@ -16,96 +14,86 @@ public class OnlineManager : NetworkBehaviour {
 
     public List<TextMeshProUGUI> textArray;
     public PlayerData playerData;
-    public bool MHDAbgelaufen = false;
-    public List<GameObject> imagesNeuesAngebot;
+    public bool isExpired = false;
+    public List<GameObject> imagesNewOffer;
     public int selectedImage;
     public GameObject playerObject;
     ulong serverId = 0;
     public NetworkManager networkManager;
-    public string Beitrittscode;
+    public string inviteCode;
 
-    //Network Variables
+    // Network Variables
     private NetworkVariable<int> selectedImageNet = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private NetworkVariable<FixedString128Bytes> textNet = new NetworkVariable<FixedString128Bytes>("null", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    private NetworkVariable<FixedString128Bytes> DescNet = new NetworkVariable<FixedString128Bytes>("null", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    private NetworkVariable<FixedString128Bytes> descNet = new NetworkVariable<FixedString128Bytes>("null", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private NetworkVariable<FixedString128Bytes> nameNet = new NetworkVariable<FixedString128Bytes>("null", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private NetworkVariable<FixedString128Bytes> rankNet = new NetworkVariable<FixedString128Bytes>("null", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
-    private NetworkVariable<bool> mHDAbgelaufenNet = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    private NetworkVariable<bool> expiredNet = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private NetworkVariable<ulong> clientIdNet = new NetworkVariable<ulong>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     public void SpawnServerPrefab() {
         if (NetworkManager.Singleton.IsServer) {
             Debug.Log("AsServer");
-            SpawnServerObjects(selectedImage, textArray[0].text, textArray[1].text, playerData.playerName, playerData.playerRang, MHDAbgelaufen, serverId);
+            SpawnServerObjects(selectedImage, textArray[0].text, textArray[1].text, playerData.playerName, playerData.playerRang, isExpired, serverId);
         }
         else {
             Debug.Log("AsRPC");
-            SpawnServerRpc(selectedImage, textArray[0].text, textArray[1].text, playerData.playerName, playerData.playerRang, MHDAbgelaufen);
+            SpawnServerRpc(selectedImage, textArray[0].text, textArray[1].text, playerData.playerName, playerData.playerRang, isExpired);
         }
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnServerRpc(int value, string textValue, string DescValue, string nameValue, string rankValue, bool mhdAbgelaufenValue, ServerRpcParams rpcParams = default) {
+    private void SpawnServerRpc(int value, string textValue, string DescValue, string nameValue, string rankValue, bool isExpired, ServerRpcParams rpcParams = default) {
         ulong clientId = rpcParams.Receive.SenderClientId;
-        SpawnServerObjects(value, textValue, DescValue, nameValue, rankValue, mhdAbgelaufenValue, clientId);
+        SpawnServerObjects(value, textValue, DescValue, nameValue, rankValue, isExpired, clientId);
     }
 
-    private void SpawnServerObjects(int value, string textValue, string DescValue, string nameValue, string rankValue, bool mhdAbgelaufenValue, ulong clientId) {
+    private void SpawnServerObjects(int value, string textValue, string DescValue, string nameValue, string rankValue, bool isExpired, ulong clientId) {
         if (IsServer) {
             ServerPrefab = Instantiate(theListPrefab, panel);
-            //
-            //Hier immer die ...Net Values
-            InserListValues(ServerPrefab, selectedImageNet.Value, textNet.Value.ToString(), DescNet.Value.ToString(), nameNet.Value.ToString(), rankNet.Value.ToString(), mHDAbgelaufenNet.Value, clientIdNet.Value);
+            
+            // Network values
             selectedImageNet.Value = value;
             textNet.Value = new FixedString128Bytes(textValue);
-            DescNet.Value = new FixedString128Bytes(DescValue);
+            descNet.Value = new FixedString128Bytes(DescValue);
             nameNet.Value = new FixedString128Bytes(nameValue);
             rankNet.Value = new FixedString128Bytes(rankValue);
-            mHDAbgelaufenNet.Value = mhdAbgelaufenValue;
+            expiredNet.Value = isExpired;
             clientIdNet.Value = clientId;
-            //
+            InserListValues(ServerPrefab, selectedImageNet.Value, textNet.Value.ToString(), descNet.Value.ToString(), nameNet.Value.ToString(), rankNet.Value.ToString(), expiredNet.Value, clientIdNet.Value);
+
             ServerPrefab.GetComponent<NetworkObject>().Spawn(true);
-            SpawnClientRpc(selectedImageNet.Value, textNet.Value.ToString(), DescNet.Value.ToString(), nameNet.Value.ToString(), rankNet.Value.ToString(), mHDAbgelaufenNet.Value, clientIdNet.Value);
+            SpawnClientRpc(selectedImageNet.Value, textNet.Value.ToString(), descNet.Value.ToString(), nameNet.Value.ToString(), rankNet.Value.ToString(), expiredNet.Value, clientIdNet.Value);
         }
 
     }
 
     [ClientRpc]
-    private void SpawnClientRpc(int value, string textValue, string descValue, string nameValue, string rankValue, bool mhdAbgelaufenValue, ulong clientId) {
+    private void SpawnClientRpc(int value, string textValue, string descValue, string nameValue, string rankValue, bool isExpired, ulong clientId) {
         ClientPrefab = Instantiate(theListPrefab, panel);
-        //
-        //Hier immer die übergebenen Values
-        InserListValues(ClientPrefab, value, textValue, descValue, nameValue, rankValue, mhdAbgelaufenValue, clientId);
+        // Transfered values
+        InserListValues(ClientPrefab, value, textValue, descValue, nameValue, rankValue, isExpired, clientId);
         textNet.Value = new FixedString128Bytes(textValue);
-        DescNet.Value = new FixedString128Bytes(descValue);
+        descNet.Value = new FixedString128Bytes(descValue);
         nameNet.Value = new FixedString128Bytes(nameValue);
         rankNet.Value = new FixedString128Bytes(rankValue);
-        mHDAbgelaufenNet.Value = mhdAbgelaufenValue;
-        //
+        expiredNet.Value = isExpired;
     }
 
-    TextMeshProUGUI textUGUI;
-    TextMeshProUGUI textUGUI2;
-    private void InserListValues(GameObject serverPrefab, int value, string textValue, string descValue, string nameValue, string rankValue, bool mhdAbgelaufenValue, ulong clientId) {
-        //Transfer von Text zur Anzeige
+    private void InserListValues(GameObject serverPrefab, int value, string textValue, string descValue, string nameValue, string rankValue, bool isExpired, ulong clientId) {
+        
+        // Transfer of Text for Frontend
         ListObjectValues listObject = serverPrefab.GetComponent<ListObjectValues>();
-        listObject.UsernameRank.text = nameValue + System.Environment.NewLine + rankValue;
-
-        listObject.MHDAbgelaufen = mhdAbgelaufenValue;
+        
+        listObject.usernameRank.text = nameValue + System.Environment.NewLine + rankValue;
+        listObject.isExpired = isExpired;
         listObject.selectedImageNum = value;
-        textUGUI = new GameObject().AddComponent<TextMeshProUGUI>();
-        textUGUI.SetText(textValue);
-        textUGUI2 = new GameObject().AddComponent<TextMeshProUGUI>();
-        textUGUI2.SetText(descValue);
-        listObject.description = textUGUI2.text;
-        listObject.UpdateTextObjects(textUGUI, textUGUI2);
         listObject.creatorID = clientId;
+
+        listObject.UpdateTextObjects(textValue, descValue);
     }
 
-
-
-
-    //XP
+    // XP
     public void AddXP(ulong receiverId) {
         if (NetworkManager.Singleton.IsServer) {
             Debug.Log("AsServer-XP");
@@ -134,16 +122,7 @@ public class OnlineManager : NetworkBehaviour {
         playerData.GiveXP();
     }
 
-
-
-
-
-
-
-
-
-
-    // Button Functions
+    // Button functions
     private void Start() {
         if (playerObject != null) {
             playerData = playerObject.GetComponent<PlayerData>();
@@ -157,16 +136,16 @@ public class OnlineManager : NetworkBehaviour {
         textArray[1] = textDescription;
     }
 
-    public void SaveMHD(bool abgelaufen) {
-        MHDAbgelaufen = abgelaufen;
+    public void SaveMHD(bool expired) {
+        isExpired = expired;
     }
 
-    //Nur AngebotsErstellungsfenster
+    // Only for the 'create offer' window
     public void SelectImage(int imageNum) {
         selectedImage = imageNum;
-        imagesNeuesAngebot[selectedImage].SetActive(true);
-        for (int i = 0; i < imagesNeuesAngebot.Count; i++) {
-            var element = imagesNeuesAngebot[i];
+        imagesNewOffer[selectedImage].SetActive(true);
+        for (int i = 0; i < imagesNewOffer.Count; i++) {
+            var element = imagesNewOffer[i];
             if (i != selectedImage) {
                 element.SetActive(false);
                 continue;

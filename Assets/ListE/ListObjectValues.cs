@@ -10,15 +10,15 @@ using UnityEngine.UI;
 public class ListObjectValues : MonoBehaviour
 {
     public TextMeshProUGUI title;
-    public TextMeshProUGUI standort;
-    public TextMeshProUGUI UsernameRank;
-    public bool MHDAbgelaufen;
+    public TextMeshProUGUI location;
+    public TextMeshProUGUI usernameRank;
+    public bool isExpired;
     public int selectedImageNum;
     public string description;
     public List<GameObject> images;
     string[] myCity = { "Stuttgart", "Esslingen", "Fellbach", "Fellbach", "Waiblingen", "Feuerbach", "Vahingen", "Leonberg", "Ludwigsburg" }; 
 
-    public GameObject angebotsAnzeige;
+    public GameObject advertisement;
     PlayerData playerData;
     public ulong creatorID;
     public bool orderedToDestroy = false;
@@ -26,26 +26,24 @@ public class ListObjectValues : MonoBehaviour
     void Start()
     {
         int rdm = Random.Range(0, 8);
-        standort.text = myCity[rdm];
+        location.text = myCity[rdm];
 
-        imageActivator(images);
+        ImageActivator(images);
         Button thisButton = this.GetComponent<Button>();
 
         playerData = FindFirstObjectByType<PlayerData>();
-        thisButton.onClick.AddListener(activateObject);
+        thisButton.onClick.AddListener(ActivateObject);
 
-
-        //this last
+        // this is the last step or the sorting will fail
         StartUp();
     }
 
-
-    public void UpdateTextObjects(TextMeshProUGUI titleNew, TextMeshProUGUI descriptionNew) {
-        title.text = titleNew.text;
-        description = descriptionNew.text;
+    public void UpdateTextObjects(string newTitle, string newDescription) {
+        title.text = newTitle;
+        description = newDescription;
     }
 
-    void imageActivator(List<GameObject> imageList) {
+    void ImageActivator(List<GameObject> imageList) {
         imageList[selectedImageNum].SetActive(true);
         for (int i = 0; i < imageList.Count; i++) {
             var element = imageList[i];
@@ -60,31 +58,29 @@ public class ListObjectValues : MonoBehaviour
         BestehendesAngebot bA = playerData.angebotsFenster.GetComponent<BestehendesAngebot>();
         bA.angebotLabels[0].text = title.text;
         bA.angebotLabels[1].text = description;
-        bA.MHDAbgelaufen = MHDAbgelaufen;
+        bA.expired = isExpired;
         bA.selectedImageNum = selectedImageNum;
-        bA.ausgewähltesAngebotInListe = this.gameObject;
-        bA.FillAngebot();
+        bA.selectedOfferInList = this.gameObject;
+        bA.FillOffer();
         bA.creatorID = creatorID;
     }
 
-    public void activateObject() {
+    public void ActivateObject() {
         playerData.angebotsFenster.SetActive(true);
         TransferAllVariables();
     }
 
-
     GameObject panel;
     public NetworkObject netObj;
     void StartUp() {
-        //Sortiert alle ListObject in das Panel ein (weil Netobject ganz oben spawnen)
+        //Arranges all ListObjects in the panel (because NetObjects spawn at the top)
         panel = GameObject.FindWithTag("panel");
 
-        //Letzter Schritt! Zerstörung des Network Objects um zu verschieben!
+        //As last step destroying the Network Object to move it!
         netObj = gameObject.GetComponent<NetworkObject>();
-        disableNetObject();
+        DisableNetObject();
         Invoke("DelayedMethod", 0.01f);
     }
-
 
     private void DelayedMethod() {
         //SortObjects.transform.parent = panel.transform;
@@ -93,19 +89,14 @@ public class ListObjectValues : MonoBehaviour
         Debug.Log("SortedList");
     }
 
-    public void disableNetObject() {
+    public void DisableNetObject() {
         if (netObj) {
             //netObj.enabled = !netObj.enabled;
             Destroy(netObj);
         }
     }
 
-
-    private void FixedUpdate() {
-        if (orderedToDestroy == true) Invoke("DestroyThisObject", 0.01f);
-    }
-
-    private void DestroyThisObject() {
-        Destroy(gameObject);
+    public void TriggerDestruction() {
+        Destroy(gameObject, 0.01f);
     }
 }

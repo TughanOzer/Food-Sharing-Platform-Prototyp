@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class BestehendesAngebot : MonoBehaviour
 {
-    public bool MHDAbgelaufen;
+    public bool expired;
     public int selectedImageNum;
-    public GameObject ausgewähltesAngebotInListe;
+    public GameObject selectedOfferInList;
 
     public List<GameObject> images2;
 
@@ -21,8 +21,8 @@ public class BestehendesAngebot : MonoBehaviour
     public GameObject AcceptButton;
 
 
-    public void FillAngebot() {
-        if (MHDAbgelaufen == false) {
+    public void FillOffer() {
+        if (expired == false) {
             angebotGameobjects[0].SetActive(true);
             angebotGameobjects[1].SetActive(false);
         }
@@ -55,13 +55,13 @@ public class BestehendesAngebot : MonoBehaviour
     public void AcceptAngebot() {
 
         //Add XP to other User UserID
-        ListObjectValues listValue = ausgewähltesAngebotInListe.GetComponent<ListObjectValues>();
+        ListObjectValues listValue = selectedOfferInList.GetComponent<ListObjectValues>();
         onlineManager.AddXP(listValue.creatorID);
 
         //remove from Internet
         //remove from List
 
-        Destroy(ausgewähltesAngebotInListe);
+        Destroy(selectedOfferInList);
     }
 
 
