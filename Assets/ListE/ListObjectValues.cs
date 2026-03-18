@@ -9,18 +9,18 @@ using UnityEngine.UI;
 
 public class ListObjectValues : MonoBehaviour
 {
-    public TextMeshProUGUI title;
-    public TextMeshProUGUI location;
-    public TextMeshProUGUI usernameRank;
-    public bool isExpired;
-    public int selectedImageNum;
+    [SerializeField] private TextMeshProUGUI title;
+    [SerializeField] private TextMeshProUGUI location;
+    [SerializeField] private TextMeshProUGUI usernameRank;
+    public bool isExpired { get; set; }
+    public int selectedImageNum { get; set; }
     public string description;
-    public List<GameObject> images;
-    string[] myCity = { "Stuttgart", "Esslingen", "Fellbach", "Fellbach", "Waiblingen", "Feuerbach", "Vahingen", "Leonberg", "Ludwigsburg" }; 
+    [SerializeField] private List<GameObject> images;
+    string[] myCity = { "Stuttgart", "Esslingen", "Fellbach", "Fellbach", "Waiblingen", "Feuerbach", "Vahingen", "Leonberg", "Ludwigsburg" };
 
-    public GameObject advertisement;
+    [SerializeField] private GameObject advertisement;
     PlayerData playerData;
-    public ulong creatorID;
+    public ulong creatorID { get; set; }
     public bool orderedToDestroy = false;
 
     void Start()
@@ -70,6 +70,10 @@ public class ListObjectValues : MonoBehaviour
         TransferAllVariables();
     }
 
+    public void UpdateUsernameRankText(string nameValue, string rankValue) {
+        usernameRank.text = nameValue + System.Environment.NewLine + rankValue;
+    }
+
     GameObject panel;
     public NetworkObject netObj;
     void StartUp() {
@@ -91,8 +95,9 @@ public class ListObjectValues : MonoBehaviour
 
     public void DisableNetObject() {
         if (netObj) {
+            gameObject.transform.SetSiblingIndex(0);
             //netObj.enabled = !netObj.enabled;
-            Destroy(netObj);
+            //Destroy(netObj);
         }
     }
 

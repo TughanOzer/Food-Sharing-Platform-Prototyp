@@ -7,20 +7,20 @@ using Unity.Netcode;
 using UnityEngine;
 
 public class OnlineManager : NetworkBehaviour {
-    public GameObject theListPrefab;
-    public Transform panel;
+    [SerializeField] private GameObject theListPrefab;
+    [SerializeField] private Transform panel;
     GameObject ServerPrefab;
     GameObject ClientPrefab;
 
-    public List<TextMeshProUGUI> textArray;
-    public PlayerData playerData;
-    public bool isExpired = false;
-    public List<GameObject> imagesNewOffer;
-    public int selectedImage;
-    public GameObject playerObject;
+    [SerializeField] private List<TextMeshProUGUI> textArray;
+    [SerializeField] private PlayerData playerData;
+    private bool isExpired = false;
+    [SerializeField] private List<GameObject> imagesNewOffer;
+    private int selectedImage;
+    [SerializeField] private GameObject playerObject;
     ulong serverId = 0;
-    public NetworkManager networkManager;
-    public string inviteCode;
+    [SerializeField] private NetworkManager networkManager;
+    private string inviteCode;
 
     // Network Variables
     private NetworkVariable<int> selectedImageNet = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -84,8 +84,8 @@ public class OnlineManager : NetworkBehaviour {
         
         // Transfer of Text for Frontend
         ListObjectValues listObject = serverPrefab.GetComponent<ListObjectValues>();
-        
-        listObject.usernameRank.text = nameValue + System.Environment.NewLine + rankValue;
+
+        listObject.UpdateUsernameRankText(nameValue, rankValue);
         listObject.isExpired = isExpired;
         listObject.selectedImageNum = value;
         listObject.creatorID = clientId;
