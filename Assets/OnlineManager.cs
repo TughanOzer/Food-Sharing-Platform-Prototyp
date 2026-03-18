@@ -34,11 +34,11 @@ public class OnlineManager : NetworkBehaviour {
     public void SpawnServerPrefab() {
         if (NetworkManager.Singleton.IsServer) {
             Debug.Log("AsServer");
-            SpawnServerObjects(selectedImage, textArray[0].text, textArray[1].text, playerData.playerName, playerData.playerRang, isExpired, serverId);
+            SpawnServerObjects(selectedImage, textArray[0].text, textArray[1].text, playerData.playerName, playerData.playerRank, isExpired, serverId);
         }
         else {
             Debug.Log("AsRPC");
-            SpawnServerRpc(selectedImage, textArray[0].text, textArray[1].text, playerData.playerName, playerData.playerRang, isExpired);
+            SpawnServerRpc(selectedImage, textArray[0].text, textArray[1].text, playerData.playerName, playerData.playerRank, isExpired);
         }
     }
 

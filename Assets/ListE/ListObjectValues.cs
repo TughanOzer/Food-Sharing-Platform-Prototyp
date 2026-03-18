@@ -55,7 +55,7 @@ public class ListObjectValues : MonoBehaviour
     }
 
     public void TransferAllVariables() {
-        BestehendesAngebot bA = playerData.angebotsFenster.GetComponent<BestehendesAngebot>();
+        BestehendesAngebot bA = playerData.offerWindow.GetComponent<BestehendesAngebot>();
         bA.angebotLabels[0].text = title.text;
         bA.angebotLabels[1].text = description;
         bA.expired = isExpired;
@@ -66,7 +66,7 @@ public class ListObjectValues : MonoBehaviour
     }
 
     public void ActivateObject() {
-        playerData.angebotsFenster.SetActive(true);
+        playerData.offerWindow.SetActive(true);
         TransferAllVariables();
     }
 

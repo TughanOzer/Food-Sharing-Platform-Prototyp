@@ -8,29 +8,29 @@ public class PlayerData : MonoBehaviour
 {
     public TextMeshProUGUI playerNameUI;
     public TextMeshProUGUI playerLevelUI;
-    public TextMeshProUGUI playerRangUI;
+    public TextMeshProUGUI playerRankUI;
     public string playerName;
     public int playerLevel;
-    public string playerRang;
-    public GameObject angebotsFenster;
+    public string playerRank;
+    public GameObject offerWindow;
     public int experience = 0;
     public ulong playerNetId;
 
-    public TextMeshProUGUI zielEinsUI;
-    public TextMeshProUGUI zielZweiUI;
+    public TextMeshProUGUI targetOneUi;
+    public TextMeshProUGUI targetTwoUi;
 
     //Erungenschaften
-    public int anzahlGeteilt = 0;
-    public int anzahlAngenommen = 0;
+    public int amountShared = 0;
+    public int amountTaken = 0;
     public Slider sliderGive;
     public Slider sliderTake;
 
     //Badges
-    public int anzahlGeteiltBages = 0;
-    public int anzahlAngenommenBages = 0;
-    public Image imageTeilen1;
-    public Image imageTeilen2;
-    public Image imageTeilen3;
+    public int amountSharedBadges = 0;
+    public int amountTakenBadges = 0;
+    public Image imageShared1;
+    public Image imageShared2;
+    public Image imageShared3;
     public Image imageTaken1;
     public Image imageTaken2;
     public Image imageTaken3;
@@ -49,8 +49,8 @@ public class PlayerData : MonoBehaviour
         experience = 0;
         playerLevelUI.text = experience.ToString() + " / " + "200";
         playerLevel = 1;
-        playerRang = "Frischer Sharer";
-        playerRangUI.text = "Rang " + playerLevel + ": " + playerRang;
+        playerRank = "Frischer Sharer";
+        playerRankUI.text = "Rang " + playerLevel + ": " + playerRank;
     }
 
     bool finishedAnimation = true;
@@ -61,60 +61,60 @@ public class PlayerData : MonoBehaviour
             experience = 0;
             playerLevelUI.text = experience.ToString() + " / " + "200";
             playerLevel += 1;
-            if (playerLevel == 2) playerRang = "Zuverlässiger Sharer";
-            else if (playerLevel == 3) playerRang = "Helfender Sharer";
-            else if (playerLevel == 4) playerRang = "Aktiver Sharer";
-            else if (playerLevel == 5) playerRang = "Erfahrener Sharer";
-            else if (playerLevel == 6) playerRang = "Sharing Experte";
-            else if (playerLevel == 7) playerRang = "Foodsharing Mentor";
-            else if (playerLevel == 8) playerRang = "Großzügiger Spender";
-            else if (playerLevel == 9) playerRang = "Lebensmittelretter";
-            else if (playerLevel == 10) playerRang = "Sharing Held";
-            else if (playerLevel == 11) playerRang = "Sharing Meister";
-            else if (playerLevel == 12) playerRang = "Sharing Legende";
-            else if (playerLevel == 13) playerRang = "Sharing Guru";
-            else if (playerLevel == 14) playerRang = "Sharing Visionär";
-            else if (playerLevel == 15) playerRang = "Sharing Pionier";
-            else if (playerLevel == 16) playerRang = "Sharing Genie";
-            else if (playerLevel == 17) playerRang = "Sharing Magier";
-            else if (playerLevel == 18) playerRang = "Sharing König";
-            else if (playerLevel == 19) playerRang = "Sharing Imperator";
-            else if (playerLevel >= 20) playerRang = "Sharing Gott";
-            playerRangUI.text = "Rang " + playerLevel + ": " + playerRang;
+            if (playerLevel == 2) playerRank = "Zuverlässiger Sharer";
+            else if (playerLevel == 3) playerRank = "Helfender Sharer";
+            else if (playerLevel == 4) playerRank = "Aktiver Sharer";
+            else if (playerLevel == 5) playerRank = "Erfahrener Sharer";
+            else if (playerLevel == 6) playerRank = "Sharing Experte";
+            else if (playerLevel == 7) playerRank = "Foodsharing Mentor";
+            else if (playerLevel == 8) playerRank = "Großzügiger Spender";
+            else if (playerLevel == 9) playerRank = "Lebensmittelretter";
+            else if (playerLevel == 10) playerRank = "Sharing Held";
+            else if (playerLevel == 11) playerRank = "Sharing Meister";
+            else if (playerLevel == 12) playerRank = "Sharing Legende";
+            else if (playerLevel == 13) playerRank = "Sharing Guru";
+            else if (playerLevel == 14) playerRank = "Sharing Visionär";
+            else if (playerLevel == 15) playerRank = "Sharing Pionier";
+            else if (playerLevel == 16) playerRank = "Sharing Genie";
+            else if (playerLevel == 17) playerRank = "Sharing Magier";
+            else if (playerLevel == 18) playerRank = "Sharing König";
+            else if (playerLevel == 19) playerRank = "Sharing Imperator";
+            else if (playerLevel >= 20) playerRank = "Sharing Gott";
+            playerRankUI.text = "Rang " + playerLevel + ": " + playerRank;
         }
 
         finishedAnimation = false;
     }
 
-    public void Angenommen() {
-        anzahlAngenommen += 1;
-        if (anzahlAngenommen >= 3) {
-            anzahlAngenommen = 3;
+    public void OfferTaken() {
+        amountTaken += 1;
+        if (amountTaken >= 3) {
+            amountTaken = 3;
         }
-        zielZweiUI.text = anzahlAngenommen + " / " + "3";
-        sliderTake.value = anzahlAngenommen;
+        targetTwoUi.text = amountTaken + " / " + "3";
+        sliderTake.value = amountTaken;
 
-        anzahlAngenommenBages += 1;
-        if (anzahlAngenommenBages >= 1) unlockBadge(imageTaken1);
-        if (anzahlAngenommenBages >= 2) unlockBadge(imageTaken2);
-        if (anzahlAngenommenBages >= 10) unlockBadge(imageTaken3);
+        amountTakenBadges += 1;
+        if (amountTakenBadges >= 1) UnlockBadge(imageTaken1);
+        if (amountTakenBadges >= 2) UnlockBadge(imageTaken2);
+        if (amountTakenBadges >= 10) UnlockBadge(imageTaken3);
     }
 
-    public void Geteilt() {
-        anzahlGeteilt += 1;
-        if (anzahlGeteilt >= 3) {
-            anzahlGeteilt = 3;
+    public void OfferShared() {
+        amountShared += 1;
+        if (amountShared >= 3) {
+            amountShared = 3;
         }
-        zielEinsUI.text = anzahlGeteilt + " / " + "3";
-        sliderGive.value = anzahlGeteilt;
+        targetOneUi.text = amountShared + " / " + "3";
+        sliderGive.value = amountShared;
         //Badges
-        anzahlGeteiltBages += 1;
-        if(anzahlGeteiltBages >= 1) unlockBadge(imageTeilen1);
-        if(anzahlGeteiltBages >= 5) unlockBadge(imageTeilen2);
-        if (anzahlGeteiltBages >= 20) unlockBadge(imageTeilen3);
+        amountSharedBadges += 1;
+        if(amountSharedBadges >= 1) UnlockBadge(imageShared1);
+        if(amountSharedBadges >= 5) UnlockBadge(imageShared2);
+        if (amountSharedBadges >= 20) UnlockBadge(imageShared3);
     }
 
-    void unlockBadge(Image image) {
+    void UnlockBadge(Image image) {
         image.color = Color.white;
     }
 
