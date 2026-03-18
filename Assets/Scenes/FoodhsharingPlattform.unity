@@ -2250,29 +2250,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerNameUI: {fileID: 7703472138249946888}
   playerLevelUI: {fileID: 6083843183860699186}
-  playerRangUI: {fileID: 3419331703840266093}
-  playerName: 
-  playerLevel: 0
-  playerRang: 
-  angebotsFenster: {fileID: 37286805436833681}
-  experience: 0
-  playerNetId: 0
-  zielEinsUI: {fileID: 1251460703}
-  zielZweiUI: {fileID: 1950454939}
-  anzahlGeteilt: 0
-  anzahlAngenommen: 0
+  playerRankUI: {fileID: 0}
+  targetOneUi: {fileID: 0}
+  targetTwoUi: {fileID: 0}
   sliderGive: {fileID: 1570321210}
   sliderTake: {fileID: 1889470878}
-  anzahlGeteiltBages: 0
-  anzahlAngenommenBages: 0
-  imageTeilen1: {fileID: 113297323}
-  imageTeilen2: {fileID: 949158877}
-  imageTeilen3: {fileID: 1484256660}
-  imageTaken1: {fileID: 1132441881}
-  imageTaken2: {fileID: 873419093}
-  imageTaken3: {fileID: 751409584}
   sliderXP: {fileID: 39584882}
-  speed: 0.5
+  sharedBadges: []
+  takenBadges: []
+  xpSliderSpeed: 5
+  offerWindow: {fileID: 0}
 --- !u!1 &797282358
 GameObject:
   m_ObjectHideFlags: 0
