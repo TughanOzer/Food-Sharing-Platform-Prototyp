@@ -11,12 +11,12 @@ Created a scalable UI system in Unity.
 
 The OnlineManager serves as the central hub for synchronized user interactions. 
 It demonstrates proficiency in 
-- Ensuring data integrity during item swaps and XP distribution.
+- Data integrity during item swaps and XP distribution.
 - Using NetworkVariables for real-time consistency across all clients.
 - Optimizing network traffic by sending data packets only to relevant clients.
 
 
-Requirements: (new commits): Unity 6000.3, (original release) Unity 2023.1.0
+### Requirements: (new commits): Unity 6000.3, (original release) Unity 2023.1.0
 
 ![PreviewImage_AppOffers](PreviewImage_AppOffers.png)
 ![PreviewImage_AppGamification](PreviewImage_AppGamification.png)
